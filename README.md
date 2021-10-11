@@ -1,8 +1,10 @@
 # speedr
 This is an R package to access the Enrichr API. The package supports listing gene sets, enrichment analysis of selected gene set library with and without background correction. The R package links to a derivation of the enrichr API.
 
-## Installation 
-```
+## Installation
+
+In the R console enter the following lines to install from GitHub.
+```R
 library(devtools)
 install_github("MaayanLab/speedr/speedr")
 ```
@@ -10,9 +12,8 @@ install_github("MaayanLab/speedr/speedr")
 ## Configuration
 
 The R package needs information where to direct requests to. Before queries can be run, the server needs to be specified. This only needs to be run once and is stored as an environmental variable of the package.
-```
+```R
 library("speedr")
-
 speedr::set_server("https://maayanlab.cloud/enrichrapi")
 ```
 
