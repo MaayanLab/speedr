@@ -12,7 +12,7 @@ enrich(library, gene_array, background = NA)
 \item{gene_array}{}
 }
 \value{
-array
+dataframe
 }
 \description{
 Run enrichment analysis for a given gene set and gene set library.

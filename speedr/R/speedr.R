@@ -2,6 +2,22 @@ pkg.env <- new.env()
 pkg.env$server_url <- "http://localhost:8666/enrichrapi"
 pkg.env$background_cache <- list()
 
+
+#' @title set_server
+#'
+#' @description Change server URL.
+#'
+#' @param url
+#'
+#' @examples
+#' speedr::set_server(url)
+#'
+#' @export
+
+set_server <- function(url){
+  pkg.env$server_url <- url
+}
+
 #' @title list_libraries
 #'
 #' @description List libraries hosted by Speedrichr instance.
@@ -51,7 +67,7 @@ add_background <- function(gene_array)
 #'
 #' @param gene_array
 #'
-#' @return array
+#' @return dataframe
 #'
 #' @examples
 #' # enrichment analysis without background correction
