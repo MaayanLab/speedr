@@ -1,0 +1,11 @@
+Package: speedr
+Type: Package
+Title: R package for speedenrichr access.
+Version: 0.1.0
+Author: Alexander Lachmann
+Maintainer: The package maintainer <alexander.lachmann@mssm.edu>
+Description: This R package contains several functions to interact with the REST API of speedenrichr. Speedenrichr provides fast and accurate enrichment analysis as a microservice against a set of gene set libraries.
+License: Apache License Version 2.0?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
