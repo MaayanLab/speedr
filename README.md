@@ -5,7 +5,7 @@ This is an R package to access the Enrichr API. The package supports listing gen
 
 In the R console enter the following lines to install from GitHub.
 ```R
-library(devtools)
+library("devtools")
 install_github("MaayanLab/speedr/speedr")
 ```
 
