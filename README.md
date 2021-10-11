@@ -22,7 +22,7 @@ speedr::set_server("https://maayanlab.cloud/enrichrapi")
 
 ## Examples
 
-List supported gene set libraries
+### List supported gene set libraries
 
 ```R
 library("speedr")
@@ -31,7 +31,7 @@ speedr::set_server("https://maayanlab.cloud/enrichrapi")
 libraries <- speedr::list_libraries()
 ```
 
-Import new GMT libraries
+### Import new GMT libraries
 
 Here we are first downloading a GMT file from the Enrichr database. A full list of GMT files can be found at https://maayanlab.cloud/Enrichr/#libraries. Then the GMT file is pushed to the EnrichrAPI. After the call is completed the gene set library will be available as enrichment target. Should the server be restarted GMT files will need to be reimported.
 
@@ -50,7 +50,7 @@ res <- speedr::import_gmt("KEGG_2021_Human", gmt)
 
 ```
 
-Enrichment analysis without background correction
+### Enrichment analysis without background correction
 
 Standard enrichment analysis. The function takes in a library as shown to be available under `speedr::list_libraries()` and an array of gene identifiers (gene symbols). The function returns all gene sets with at least 1 gene overlap to the query gene set. The result dataframe contains 7 columns (rank, term, pval, fdr, odds, escore, overlap).
 
@@ -66,7 +66,7 @@ result <- speedr::enrich(library, genes)
 
 ```
 
-Enrichment analysis with background correction
+### Enrichment analysis with background correction
 
 The function takes in a library as shown to be available under `speedr::list_libraries()`, an array of gene identifiers (gene symbols) and a background gene list. The background gene list will be used to filter the input gene set and all gene sets in the selected gene set library. The function returns all gene sets with at least 1 gene overlap to the query gene set. The result dataframe contains 7 columns (rank, term, pval, fdr, odds, escore, overlap).
 
