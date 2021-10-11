@@ -2,7 +2,6 @@ pkg.env <- new.env()
 pkg.env$server_url <- "http://localhost:8666/enrichrapi"
 pkg.env$background_cache <- list()
 
-
 #' @title set_server
 #'
 #' @description Change server URL.
