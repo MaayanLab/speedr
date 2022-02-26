@@ -69,16 +69,31 @@ add_background <- function(gene_array)
 #' @return dataframe
 #'
 #' @examples
+#'
 #' # enrichment analysis without background correction
+#'
 #' library = "GO_Biological_Process_2021"
 #' genes = c('PTPN18','EGF','HSP90AA1','GAB1','NRG1','MATK','PTPN12','NRG2','PTK6','PRKCA','ERBIN','EREG','BTC','NRG4','PIK3R1','PIK3CA','CDC37','GRB2','STUB1','HBEGF','GRB7')
 #' result <- speedr::enrich(library, genes)
 #'
+#'
+#'
 #' # enrichment analysis with background correction
-#' library = "GO_Biological_Process_2021"
-#' background = c('TGFB1', 'EOMES', 'TGFB2', 'DDX17', 'NOG', 'FOXF2', 'WNT5A', 'HGF', 'HMGA2', 'HNRNPAB', 'PTPN18','EGF','HSP90AA1','GAB1','NRG1','MATK','PTPN12','NRG2','PTK6','PRKCA','ERBIN','EREG','BTC','NRG4','PIK3R1','PIK3CA','CDC37','GRB2','STUB1','HBEGF','GRB7')
+#'
+#' # download GMT file from Enrichr database
+#' url = "https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=KEGG_2021_Human"
+#' download.file(url, "KEGG_2021_Human.gmt")
+#' gmt <- speedr::read_gmt("KEGG_2021_Human.gmt")
+#'
+#' # push GMT file to API
+#' res <- speedr::import_gmt("KEGG_2021_Human", gmt)
+#'
+#' # Use genes in KEGG gmt as background
+#' background = unique(unlist(gmt))
+#'
+#' # enrich gene set
 #' genes = c('TGFB1', 'EOMES', 'TGFB2', 'DDX17', 'NOG', 'FOXF2', 'WNT5A', 'HGF', 'HMGA2', 'HNRNPAB', 'PTPN18','EGF','HSP90AA1','GAB1','NRG1','MATK','PTPN12','NRG2','PTK6','PRKCA','ERBIN','EREG','BTC','NRG4','PIK3R1','PIK3CA','CDC37','GRB2','STUB1','HBEGF','GRB7')
-#' result <- speedr::enrich(library, genes, background)
+#' result <- speedr::enrich("KEGG_2021_Human", genes, background)
 #'
 #' @export
 
@@ -115,4 +130,68 @@ enrich <- function(library, gene_array, background=NA)
   colnames(df) = c("rank", "term", "pval", "fdr", "odds", "escore", "overlap")
 
   return(df)
+}
+
+
+
+#' @title import_gmt
+#'
+#' @description Upload a GMT file.
+#'
+#' @param gmt_name
+#' @param gmt
+#'
+#' @return status
+#'
+#' @examples
+#'
+#' # download GMT file from Enrichr database
+#' url = "https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=KEGG_2021_Human"
+#' download.file(url, "KEGG_2021_Human.gmt")
+#' gmt <- speedr::read_gmt("KEGG_2021_Human.gmt")
+#'
+#' # push GMT file to API
+#' res <- speedr::import_gmt("KEGG_2021_Human", gmt)
+#'
+#' @export
+
+import_gmt <- function(gmt_name, gmt)
+{
+  request_body_json = list(library = gmt_name, genesets = gmt)
+
+  res <- POST(paste0(pkg.env$server_url,"/api/upload_gmt"), encode="json",
+              body = request_body_json)
+
+  return(fromJSON(rawToChar(res$content)))
+}
+
+#' @title read_gmt
+#'
+#' @description Read GMT file to list for later import to API.
+#'
+#' @param filename
+#'
+#' @return list
+#'
+#' @examples
+#'
+#' # download GMT file from Enrichr database
+#' url = "https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=KEGG_2021_Human"
+#' download.file(url, "KEGG_2021_Human.gmt")
+#'
+#' gmt <- speedr::read_gmt("KEGG_2021_Human.gmt")
+#'
+#' @export
+
+read_gmt <- function(filename)
+{
+  gmt = list()
+  lines = readLines(filename)
+  for(line in lines){
+    line = gsub("\"", "", trimws(line))
+    sp = unlist(strsplit(line, "\t"))
+    sp[3:length(sp)] = gsub(",.*$", "", sp[3:length(sp)])
+    gmt[[sp[1]]] = sort(unique(sp[3:length(sp)]))
+  }
+  return(gmt)
 }
